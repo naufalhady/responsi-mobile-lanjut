@@ -35,6 +35,7 @@ class _SplashscreenState extends State<Splashscreen> {
               'Responsi',
               style: TextStyle(
                 fontSize: 24,
+                fontWeight: FontWeight.bold,
                 color:  Color.fromARGB(255, 3, 28, 49),
               ),
             ),

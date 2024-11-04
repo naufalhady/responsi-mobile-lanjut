@@ -26,6 +26,7 @@ class ResponsiApp extends StatelessWidget {
         '/': (context) => const Splashscreen(),
         '/login': (context) => const Loginscreen(),
         // '/forgotpassword': (context) => const FPScreen(),
+        // '/register': (context) => const Registerscreen(),
         // '/home': (context) => const Homescreen(),
         // '/profile': (context) => const Profilescreen(),
       },
