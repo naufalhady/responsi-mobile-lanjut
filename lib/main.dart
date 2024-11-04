@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_lanjut/splashscreen.dart';
-import 'package:mobile_lanjut/Loginscreen.dart';
+import 'package:mobile_lanjut/loginscreen.dart';
 // import 'package:mobile_lanjut/Homescreen.dart';
 // import 'package:mobile_lanjut/Profilescreen.dart';
 
