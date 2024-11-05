@@ -172,8 +172,7 @@ class _LoginscreenState extends State<Loginscreen> {
                                     backgroundColor: Colors.green,
                                     textColor: Colors.white,
                                     fontSize: 14.0);
-                                Navigator.pushReplacementNamed(
-                                    context, '/homescreen');
+                                Navigator.pushReplacementNamed(context, '/main');
                               }
                             },
                             style: ElevatedButton.styleFrom(

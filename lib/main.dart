@@ -3,8 +3,7 @@ import 'package:mobile_lanjut/splashscreen.dart';
 import 'package:mobile_lanjut/loginscreen.dart';
 import 'package:mobile_lanjut/forgotpassword.dart';
 import 'package:mobile_lanjut/register.dart';
-import 'package:mobile_lanjut/homescreen.dart';
-import 'package:mobile_lanjut/accountscreen.dart';
+import 'package:mobile_lanjut/persistent_nav_bar.dart';
 
 void main() {
   runApp(const ResponsiApp());
@@ -13,7 +12,6 @@ void main() {
 class ResponsiApp extends StatelessWidget {
   const ResponsiApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -29,10 +27,8 @@ class ResponsiApp extends StatelessWidget {
         '/login': (context) => const Loginscreen(),
         '/forgotpassword': (context) => const Forgotpassword(),
         '/register': (context) => const Register(),
-        '/homescreen': (context) => const Homescreen(),
-        '/account': (context) => const AccountScreen(),
+        '/main': (context) => const PersistentNavBar(), // Persistent nav bar
       },
-      // home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }

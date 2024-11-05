@@ -124,32 +124,6 @@ class _AccountScreenState extends State<AccountScreen> {
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: 1, // Indeks untuk halaman "Akun"
-        onTap: (index) {
-          if (index == 0) {
-            Navigator.pushReplacementNamed(context, '/homescreen');
-          } else if (index == 2) {
-            SystemNavigator.pop();
-          }
-        },
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Beranda',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.account_circle),
-            label: 'Akun',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.logout),
-            label: 'Keluar',
-          ),
-        ],
-        selectedItemColor: Colors.blue,
-        unselectedItemColor: Colors.blueGrey,
-      ),
     );
   }
 }

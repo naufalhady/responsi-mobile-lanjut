@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'dart:io';
 import 'package:mobile_lanjut/dummy_data.dart';
 
 class Homescreen extends StatefulWidget {
@@ -11,24 +9,8 @@ class Homescreen extends StatefulWidget {
 }
 
 class _HomescreenState extends State<Homescreen> {
-  int _selectedIndex = 0;
   List<Map<String, dynamic>> _currentListItems =
-      DummyData.getItemsByCategory("Nutrisi"); // Default kategori
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-    if (index == 1) {
-      Navigator.pushNamed(context, '/account');
-    } else if (index == 2) {
-      if (Platform.isAndroid) {
-        SystemNavigator.pop();
-      } else if (Platform.isIOS) {
-        exit(0);
-      }
-    }
-  }
+      DummyData.getItemsByCategory("Nutrisi"); // Set default kategori
 
   // Fungsi untuk mengubah list item berdasarkan kategori yang dipilih
   void _onCategorySelected(String categoryTitle) {
@@ -94,6 +76,7 @@ class _HomescreenState extends State<Homescreen> {
                 ),
               ],
             ),
+            const SizedBox(height: 10),
             SizedBox(
               height: 120,
               child: GridView.builder(
@@ -137,7 +120,6 @@ class _HomescreenState extends State<Homescreen> {
                 },
               ),
             ),
-
             const SizedBox(height: 20),
 
             // Widget List View untuk List Item
@@ -190,38 +172,6 @@ class _HomescreenState extends State<Homescreen> {
               ),
             ),
           ],
-        ),
-      ),
-      bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.1),
-              spreadRadius: 5,
-              blurRadius: 10,
-              offset: const Offset(0, 0),
-            ),
-          ],
-        ),
-        child: BottomNavigationBar(
-          currentIndex: _selectedIndex,
-          onTap: _onItemTapped,
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Beranda',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.account_circle),
-              label: 'Akun',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.logout),
-              label: 'Keluar',
-            ),
-          ],
-          selectedItemColor: Colors.blue,
-          unselectedItemColor: Colors.blueGrey,
         ),
       ),
     );
