@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_lanjut/splashscreen.dart';
 import 'package:mobile_lanjut/loginscreen.dart';
-// import 'package:mobile_lanjut/Homescreen.dart';
-// import 'package:mobile_lanjut/Profilescreen.dart';
+import 'package:mobile_lanjut/forgotpassword.dart';
+import 'package:mobile_lanjut/register.dart';
+import 'package:mobile_lanjut/homescreen.dart';
+import 'package:mobile_lanjut/accountscreen.dart';
 
 void main() {
   runApp(const ResponsiApp());
@@ -25,10 +27,10 @@ class ResponsiApp extends StatelessWidget {
       routes: {
         '/': (context) => const Splashscreen(),
         '/login': (context) => const Loginscreen(),
-        // '/forgotpassword': (context) => const FPScreen(),
-        // '/register': (context) => const Registerscreen(),
-        // '/home': (context) => const Homescreen(),
-        // '/profile': (context) => const Profilescreen(),
+        '/forgotpassword': (context) => const Forgotpassword(),
+        '/register': (context) => const Register(),
+        '/homescreen': (context) => const Homescreen(),
+        '/account': (context) => const AccountScreen(),
       },
       // home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );

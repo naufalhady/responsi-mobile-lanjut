@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-class Loginscreen extends StatefulWidget {
-  const Loginscreen({super.key});
+class Register extends StatefulWidget {
+  const Register({super.key});
 
   @override
-  State<Loginscreen> createState() => _LoginscreenState();
+  State<Register> createState() => _RegisterState();
 }
 
-class _LoginscreenState extends State<Loginscreen> {
+class _RegisterState extends State<Register> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController(); // Controller untuk konfirmasi password
   final _formKey = GlobalKey<FormState>(); // Key untuk form validasi
 
   @override
@@ -50,7 +52,7 @@ class _LoginscreenState extends State<Loginscreen> {
                   ),
                   const SizedBox(height: 50),
                   const Text(
-                    'Masuk',
+                    'Daftar',
                     style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
@@ -142,21 +144,36 @@ class _LoginscreenState extends State<Loginscreen> {
                           },
                         ),
                         const SizedBox(height: 20),
-                        // Teks Lupa Password
-                        Align(
-                          alignment: Alignment.centerRight,
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.pushNamed(context, '/forgotpassword');
-                            },
-                            child: const Text(
-                              "Lupa Password?",
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.blue,
-                              ),
+
+                        // Input untuk Konfirmasi Password
+                        TextFormField(
+                          controller: _confirmPasswordController,
+                          decoration: InputDecoration(
+                            labelText: 'Konfirmasi Password',
+                            hintText: 'Masukkan ulang password anda',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12.0),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12.0),
+                              borderSide: const BorderSide(
+                                  color: Colors.grey, width: 2.0),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12.0),
+                              borderSide: const BorderSide(
+                                  color: Colors.blue, width: 2.0),
                             ),
                           ),
+                          obscureText: true,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Konfirmasi password tidak boleh kosong';
+                            } else if (value != _passwordController.text) {
+                              return 'Password tidak sama';
+                            }
+                            return null;
+                          },
                         ),
                         const SizedBox(height: 30),
 
@@ -166,7 +183,7 @@ class _LoginscreenState extends State<Loginscreen> {
                             onPressed: () {
                               if (_formKey.currentState!.validate()) {
                                 Fluttertoast.showToast(
-                                    msg: "Berhasil masuk",
+                                    msg: "Registrasi berhasil",
                                     toastLength: Toast.LENGTH_SHORT,
                                     gravity: ToastGravity.BOTTOM,
                                     backgroundColor: Colors.green,
@@ -177,8 +194,7 @@ class _LoginscreenState extends State<Loginscreen> {
                               }
                             },
                             style: ElevatedButton.styleFrom(
-                              backgroundColor:
-                                  Colors.blue, // Warna latar belakang biru
+                              backgroundColor: Colors.blue,
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 200, vertical: 15),
                               shape: RoundedRectangleBorder(
@@ -186,7 +202,7 @@ class _LoginscreenState extends State<Loginscreen> {
                               ),
                             ),
                             child: const Text(
-                              "Masuk",
+                              "Daftar",
                               style: TextStyle(
                                 fontSize: 16,
                                 color: Colors.white,
@@ -194,14 +210,13 @@ class _LoginscreenState extends State<Loginscreen> {
                             ),
                           ),
                         ),
-
                         const SizedBox(height: 20),
 
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             const Text(
-                              'Belum punya akun?',
+                              'Sudah punya akun?',
                               style: TextStyle(
                                 fontSize: 14,
                                 color: Color.fromARGB(255, 3, 28, 49),
@@ -210,10 +225,10 @@ class _LoginscreenState extends State<Loginscreen> {
                             const SizedBox(width: 8),
                             GestureDetector(
                               onTap: () {
-                                Navigator.pushNamed(context, '/register');
+                                Navigator.pushNamed(context, '/login');
                               },
                               child: const Text(
-                                'Daftar',
+                                'Masuk',
                                 style: TextStyle(
                                   fontSize: 14,
                                   color: Colors.blue,
