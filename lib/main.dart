@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_lanjut/splashscreen.dart';
+import 'package:mobile_lanjut/loginscreen.dart';
+import 'package:mobile_lanjut/forgotpassword.dart';
+import 'package:mobile_lanjut/register.dart';
 import 'package:mobile_lanjut/homescreen.dart';
 import 'package:mobile_lanjut/accountscreen.dart';
 

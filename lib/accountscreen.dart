@@ -1,15 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart'; // Tambahkan ini untuk akses SharedPreferences
 import 'package:mobile_lanjut/editprofilescreen.dart';
 
-class AccountScreen extends StatelessWidget {
+class AccountScreen extends StatefulWidget {
   const AccountScreen({super.key});
+
+  @override
+  State<AccountScreen> createState() => _AccountScreenState();
+}
+
+class _AccountScreenState extends State<AccountScreen> {
+  String _name = 'Nama Lengkap'; // Default jika belum ada data
+  String _university = 'Asal Universitas'; // Default jika belum ada data
+
+  @override
+  void initState() {
+    super.initState();
+    _loadProfileData(); // Load data saat halaman dimuat
+  }
+
+  // Fungsi untuk memuat data dari SharedPreferences
+  Future<void> _loadProfileData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _name = prefs.getString('name') ?? 'Nama Lengkap';
+      _university = prefs.getString('university') ?? 'Asal Universitas';
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        // backgroundColor: Colors.white,
         elevation: 0,
         iconTheme: const IconThemeData(color: Colors.black),
       ),
@@ -32,16 +56,16 @@ class AccountScreen extends StatelessWidget {
                       size: 80, color: Colors.grey),
                 ),
                 const SizedBox(height: 10),
-                const Text(
-                  'Nama Lengkap',
-                  style: TextStyle(
+                Text(
+                  _name, // Tampilkan nama yang diambil dari SharedPreferences
+                  style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                const Text(
-                  'Asal Universitas',
-                  style: TextStyle(
+                Text(
+                  _university, // Tampilkan asal universitas yang diambil dari SharedPreferences
+                  style: const TextStyle(
                     fontSize: 14,
                     color: Colors.grey,
                   ),
@@ -59,13 +83,15 @@ class AccountScreen extends StatelessWidget {
                   ListTile(
                     title: const Text('Kelola Akun'),
                     trailing: const Icon(Icons.arrow_forward_ios),
-                    onTap: () {
-                      Navigator.push(
+                    onTap: () async {
+                      // Navigasi ke EditProfileScreen dan refresh data saat kembali
+                      await Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => const EditProfileScreen(),
                         ),
                       );
+                      _loadProfileData(); // Refresh data setelah kembali dari EditProfileScreen
                     },
                   ),
                   Divider(height: 1, color: Colors.grey[300]),
@@ -102,7 +128,7 @@ class AccountScreen extends StatelessWidget {
         currentIndex: 1, // Indeks untuk halaman "Akun"
         onTap: (index) {
           if (index == 0) {
-            Navigator.pushReplacementNamed(context, '/home');
+            Navigator.pushReplacementNamed(context, '/homescreen');
           } else if (index == 2) {
             SystemNavigator.pop();
           }
@@ -110,7 +136,7 @@ class AccountScreen extends StatelessWidget {
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            label: 'Home',
+            label: 'Beranda',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.account_circle),
@@ -118,11 +144,11 @@ class AccountScreen extends StatelessWidget {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.logout),
-            label: 'Logout',
+            label: 'Keluar',
           ),
         ],
-        selectedItemColor: Colors.purple,
-        unselectedItemColor: Colors.grey,
+        selectedItemColor: Colors.blue,
+        unselectedItemColor: Colors.blueGrey,
       ),
     );
   }

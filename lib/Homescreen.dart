@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'dart:io'; // Untuk exit(0)
+import 'dart:io';
+import 'package:mobile_lanjut/dummy_data.dart';
 
 class Homescreen extends StatefulWidget {
   const Homescreen({super.key});
@@ -11,34 +12,53 @@ class Homescreen extends StatefulWidget {
 
 class _HomescreenState extends State<Homescreen> {
   int _selectedIndex = 0;
+  List<Map<String, dynamic>> _currentListItems =
+      DummyData.getItemsByCategory("Nutrisi"); // Default kategori
 
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
-    // Logika untuk navigasi berdasarkan indeks
     if (index == 1) {
       Navigator.pushNamed(context, '/account');
     } else if (index == 2) {
-      // Cek platform, lalu keluar dari aplikasi
       if (Platform.isAndroid) {
-        SystemNavigator.pop(); // Untuk Android
+        SystemNavigator.pop();
       } else if (Platform.isIOS) {
-        exit(0); // Untuk iOS
+        exit(0);
       }
     }
+  }
+
+  // Fungsi untuk mengubah list item berdasarkan kategori yang dipilih
+  void _onCategorySelected(String categoryTitle) {
+    setState(() {
+      _currentListItems = DummyData.getItemsByCategory(categoryTitle);
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.white,
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(40),
+        child: AppBar(
           elevation: 0,
           iconTheme: const IconThemeData(color: Colors.black),
-          leading: IconButton(
-            icon: const Icon(Icons.account_circle),
-            onPressed: () {},
+          leadingWidth: 120,
+          leading: Row(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              IconButton(
+                icon: const Icon(Icons.account_circle),
+                onPressed: () {},
+              ),
+              const Text(
+                'Tamu',
+                style: TextStyle(fontSize: 16),
+              ),
+            ],
           ),
           actions: [
             IconButton(
@@ -51,148 +71,159 @@ class _HomescreenState extends State<Homescreen> {
             ),
           ],
         ),
-        body: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                'Guest',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Widget Grid View untuk Kategori
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Kategori',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
-              ),
-              const SizedBox(height: 20),
-
-              // Widget Grid View
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    'Widget Grid View',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                  TextButton(
-                    onPressed: () {},
-                    child: const Text('→'),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 120,
-                child: GridView.builder(
-                  scrollDirection: Axis.horizontal,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 1,
-                    mainAxisSpacing: 10.0,
-                  ),
-                  itemCount: 14, // jumlah item grid
-                  itemBuilder: (context, index) {
-                    return Card(
+                IconButton(
+                  icon: const Icon(Icons
+                      .arrow_right_alt_sharp), // Menggunakan Icon dari Icons
+                  onPressed: () {
+                    // Tambahkan logika yang Anda inginkan saat tombol ini diklik
+                  },
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 120,
+              child: GridView.builder(
+                scrollDirection: Axis.horizontal,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 1,
+                  mainAxisSpacing: 10.0,
+                ),
+                itemCount: DummyData.categories.length,
+                itemBuilder: (context, index) {
+                  final category = DummyData.categories[index];
+                  return GestureDetector(
+                    onTap: () => _onCategorySelected(category["title"]),
+                    child: Card(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8.0),
                       ),
-                      child: const Padding(
-                        padding: EdgeInsets.all(8.0),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(Icons.image, size: 48, color: Colors.grey),
-                            SizedBox(height: 8),
-                            Text('Artist',
-                                style: TextStyle(fontWeight: FontWeight.bold)),
-                            Text('Song', style: TextStyle(color: Colors.grey)),
+                            Icon(category["icon"],
+                                size: 48, color: Colors.grey),
+                            const SizedBox(height: 8),
+                            Text(
+                              category["title"],
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            Text(
+                              category["description"],
+                              style: const TextStyle(color: Colors.grey),
+                              textAlign: TextAlign.center,
+                            ),
                           ],
                         ),
                       ),
-                    );
+                    ),
+                  );
+                },
+              ),
+            ),
+
+            const SizedBox(height: 20),
+
+            // Widget List View untuk List Item
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'List item',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                IconButton(
+                  icon: const Icon(Icons
+                      .arrow_right_alt_sharp), // Menggunakan Icon dari Icons
+                  onPressed: () {
+                    // Tambahkan logika yang Anda inginkan saat tombol ini diklik
                   },
                 ),
+              ],
+            ),
+            Expanded(
+              child: ListView.builder(
+                itemCount: _currentListItems.length,
+                itemBuilder: (context, index) {
+                  final listItem = _currentListItems[index];
+                  return ListTile(
+                    leading: Container(
+                      width: 60,
+                      height: 60,
+                      color: Colors.grey[300],
+                      child: Icon(listItem["icon"], color: Colors.grey),
+                    ),
+                    title: Text(listItem["headline"]),
+                    subtitle: Text(listItem["description"]),
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(
+                          icon: const Icon(Icons.add_circle_outline),
+                          onPressed: () {},
+                        ),
+                        const SizedBox(width: 8),
+                        IconButton(
+                          icon: const Icon(Icons.book),
+                          onPressed: () {},
+                        ),
+                      ],
+                    ),
+                  );
+                },
               ),
-
-              const SizedBox(height: 20),
-
-              // Widget List View
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    'Widget List View',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                  TextButton(
-                    onPressed: () {},
-                    child: const Text('→'),
-                  ),
-                ],
-              ),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: 14, // jumlah item list
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                      leading: Container(
-                        width: 60,
-                        height: 60,
-                        color: Colors.grey[300],
-                        child: const Icon(Icons.image, color: Colors.grey),
-                      ),
-                      title: const Text('Headline'),
-                      subtitle: const Text(
-                          'Description duis aute irure dolor in reprehenderit in volup...'),
-                      trailing: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          IconButton(
-                            icon: const Icon(Icons.add_circle_outline),
-                            onPressed: () {},
-                          ),
-                          const SizedBox(width: 8),
-                          IconButton(
-                            icon: const Icon(Icons.play_arrow),
-                            onPressed: () {},
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
-        bottomNavigationBar: Container(
-          decoration: BoxDecoration(
-            // color: Colors.white,
-            boxShadow: [
-              BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
-                  spreadRadius: 5,
-                  blurRadius: 10,
-                  offset: const Offset(0, 0)),
-            ],
-          ),
-          child: BottomNavigationBar(
-            currentIndex: _selectedIndex,
-            onTap: _onItemTapped,
-            items: const <BottomNavigationBarItem>[
-              BottomNavigationBarItem(
-                icon: Icon(Icons.home),
-                label: 'Home',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.account_circle),
-                label: 'Akun',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.logout),
-                label: 'Logout',
-              ),
-            ],
-            selectedItemColor: Colors.blue,
-            unselectedItemColor: Colors.blueGrey,
-          ),
-        ));
+      ),
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              spreadRadius: 5,
+              blurRadius: 10,
+              offset: const Offset(0, 0),
+            ),
+          ],
+        ),
+        child: BottomNavigationBar(
+          currentIndex: _selectedIndex,
+          onTap: _onItemTapped,
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Beranda',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.account_circle),
+              label: 'Akun',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.logout),
+              label: 'Keluar',
+            ),
+          ],
+          selectedItemColor: Colors.blue,
+          unselectedItemColor: Colors.blueGrey,
+        ),
+      ),
+    );
   }
 }

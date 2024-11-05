@@ -51,7 +51,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        // backgroundColor: Colors.white,
         elevation: 0,
         iconTheme: const IconThemeData(color: Colors.black),
       ),
@@ -70,18 +70,23 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     color: Colors.grey[300],
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: const Icon(Icons.account_circle, size: 80, color: Colors.grey),
+                  child: const Icon(Icons.account_circle,
+                      size: 80, color: Colors.grey),
                 ),
                 const SizedBox(height: 10),
                 Text(
-                  _nameController.text.isEmpty ? 'Nama Lengkap' : _nameController.text,
+                  _nameController.text.isEmpty
+                      ? 'Nama Lengkap'
+                      : _nameController.text,
                   style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 Text(
-                  _universityController.text.isEmpty ? 'Asal Universitas' : _universityController.text,
+                  _universityController.text.isEmpty
+                      ? 'Asal Universitas'
+                      : _universityController.text,
                   style: const TextStyle(
                     fontSize: 14,
                     color: Colors.grey,
@@ -150,7 +155,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blue,
-                padding: const EdgeInsets.symmetric(horizontal: 100, vertical: 15),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 100, vertical: 15),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8.0),
                 ),
